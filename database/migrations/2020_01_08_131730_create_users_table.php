@@ -1,9 +1,7 @@
 <?php
-
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-
 class CreateUsersTable extends Migration
 {
     /**
@@ -15,10 +13,20 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('name');
+            $table->string('email', 100)->unique()->index();
+            $table->string('password');
+            $table->integer('role_id');
             $table->timestamps();
         });
-    }
 
+        DB::table('users')->insert(
+            ['name' => 'admin123',
+            'email' => 'usuarioadministrador@gmail.com',
+            'password' => encrypt('admin123123'),
+            'role_id' => 1]
+        );
+    }
     /**
      * Reverse the migrations.
      *

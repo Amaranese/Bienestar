@@ -1,85 +1,44 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Login;
+use App\User;
 use Illuminate\Http\Request;
-
+use App\Http\Controllers\Controller;
+use \Firebase\JWT\JWT;
+/**
+*  
+*/
 class LoginController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function login()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Login  $login
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Login $login)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Login  $login
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Login $login)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Login  $login
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Login $login)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Login  $login
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Login $login)
-    {
-        //
+        $user = User::where('email', $_POST['email'])->first();
+        if (empty($_POST['email']) || empty($_POST['password'])) {
+            return response()->json([
+                'MESSAGE' => 'Some fields are empty'], 400
+            );
+        }
+        if (!is_null($user)) 
+        {
+            if (decrypt($user->password) != $_POST['password']) {
+                return response()->json([
+                    'MESSAGE' => 'Wrong password'], 400
+                );
+            }
+            $tokenParams = [
+                'id' => $user->id,
+                'password' => $_POST['password'],
+                'email' => $_POST['email'],
+            ];
+            $token = JWT::encode($tokenParams, $this->key);
+            return response()->json([
+                'MESSAGE' => $token,
+            ]);
+        }else 
+        {
+            return response()->json([
+                'MESSAGE' => 'Wrong email'], 400
+            );
+        }
     }
 }
