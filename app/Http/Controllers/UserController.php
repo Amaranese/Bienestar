@@ -69,8 +69,8 @@ class UserController extends Controller
             $user->save();
             $tokenParams = [
                 'id' => $user->id,
-                'password' => $_POST['password'],
-                'email' => $_POST['email'],
+                'password' => $user->password,
+                'email' => $user->email,
             ];
             $token = JWT::encode($tokenParams, $this->key);
             return response()->json([
