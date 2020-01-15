@@ -109,7 +109,7 @@ class UserController extends Controller
                 $userRecover->save();
                 Mail::send('emails.welcome', $dataEmail, function($message){
                     $emailRecipient = $_POST['email'];
-                    $message->from('bienestardigital@gmail.com', 'Password recovery');
+                    $message->from('bienestardigital2019@gmail.com', 'Password recovery');
                     $message->to($emailRecipient)->subject('Recover password');
                 });
                 return response()->json([
