@@ -15,7 +15,15 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $header = getallheaders();
+        $userParams = JWT::decode($header['Authorization'],$this->key, array('HS256'));
+        if ($userParams->id == 1) {
+            return User::where('role_id', 2)->get();
+        }else{
+            return reponse()->json([
+                'MESSAGE' => 'Dont have enough permission'], 403
+            );
+        }
     }
     /**
      * Show the form for creating a new resource.
@@ -34,47 +42,69 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        if (empty($request->name) || empty($request->password) || empty($request->email)) {
+        $key = $this->key;
+        $user = new User();
+        if (empty($request->name) or empty($request->email) or empty($request->password) or empty($request->confirm_password)) 
+        {
             return response()->json([
-                'MESSAGE' => 'Some fields are null'], 400
-            );
-        }else{
-            $user = new User();
-            $user->name = str_replace(' ', '', $request->name);
-            $repeatedEmail = User::where('email', $request->email)->first();
 
-            if ($repeatedEmail != true) {
-                if (!strpos($request->email, "@") || !strpos($request->email, ".")) 
-                {
-                    return response()->json([
-                        'MESSAGE' => 'The email has not been written correctly'], 406
-                    );
-                }else{
-                    $user->email = $request->email;
-                }
-            }else{
-                return response()->json([
-                    'MESSAGE' => 'The email is in use'], 400
-                );
-            }
-            if (strlen($request->password) > 7)
+                    'MESSAGE' => 'You should fill all the fields'], 400
+
+            );
+        }
+
+        $user->name = str_replace(' ', '', $request->name);
+        $user->email = $request->email;
+
+        $users = User::where('email', $request->email)->get();
+
+        foreach ($users as $key => $value) 
+        {
+            if ($request->email == $value->email) 
             {
-                $user->password = encrypt($request->password);
-            }else{
                 return response()->json([
-                    'MESSAGE' => 'The password must have more than seven characters'], 400
+                    'MESSAGE' => 'The email is in use'], 401
                 );
             }
-            $user->role_id = 2;
-            $user->save();
-            $tokenParams = [
-                'id' => $user->id,
-                'password' => $user->password,
-                'email' => $user->email,
-            ];
-            $token = JWT::encode($tokenParams, $this->key);
+        }
+
+        $user->name = str_replace(' ', '', $request->name);
+
+        if (!strpos($request->email, "@") || !strpos($request->email, ".")) 
+        {
             return response()->json([
-                'MESSAGE' => $token, 'The user has been created correctly'], 200
+                'MESSAGE' => 'The email has not been written correctly'], 406
+            );
+        } else
+        {
+            $user->email = $request->email;
+        }
+
+        if (strlen($request->password) > 7)
+        {
+            $user->password = encrypt($request->password);
+        } else
+        {
+            return response()->json([
+                'MESSAGE' => 'The password must have at least eight characters'], 411
+            );
+        }
+
+        $user->role_id = 2;
+
+        if ($request->confirm_password == $request->password) 
+        {   
+            $user->save();
+
+            $userSave = User::where('email', $request->email)->first();
+
+            return response()->json([
+                'MESSAGE' => 'The user has been created correctly'
+            ]);
+        } else
+        {
+            return response()->json([
+                'MESSAGE' => 'The password confirmation must be the same as the password'], 406
             );
         }
     }
