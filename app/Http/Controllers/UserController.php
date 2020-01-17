@@ -142,7 +142,10 @@ class UserController extends Controller
                 'MESSAGE' => 'The specified email does not exist'], 403
             );
         }
-
+    }
+    private function randomString($length = 30)
+    {
+        return substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, $length);
     }
     /**
      * Show the form for editing the specified resource.
