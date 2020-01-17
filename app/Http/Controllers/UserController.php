@@ -47,17 +47,13 @@ class UserController extends Controller
         if (empty($request->name) or empty($request->email) or empty($request->password) or empty($request->confirm_password)) 
         {
             return response()->json([
-
-                    'MESSAGE' => 'You should fill all the fields'], 400
+                'MESSAGE' => 'You should fill all the fields'], 400
 
             );
         }
-
         $user->name = str_replace(' ', '', $request->name);
         $user->email = $request->email;
-
         $users = User::where('email', $request->email)->get();
-
         foreach ($users as $key => $value) 
         {
             if ($request->email == $value->email) 
@@ -67,9 +63,7 @@ class UserController extends Controller
                 );
             }
         }
-
         $user->name = str_replace(' ', '', $request->name);
-
         if (!strpos($request->email, "@") || !strpos($request->email, ".")) 
         {
             return response()->json([
@@ -79,7 +73,6 @@ class UserController extends Controller
         {
             $user->email = $request->email;
         }
-
         if (strlen($request->password) > 7)
         {
             $user->password = encrypt($request->password);
@@ -89,15 +82,11 @@ class UserController extends Controller
                 'MESSAGE' => 'The password must have at least eight characters'], 411
             );
         }
-
         $user->role_id = 2;
-
         if ($request->confirm_password == $request->password) 
         {   
             $user->save();
-
             $userSave = User::where('email', $request->email)->first();
-
             return response()->json([
                 'MESSAGE' => 'The user has been created correctly'
             ]);
