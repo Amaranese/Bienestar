@@ -103,9 +103,46 @@ class UserController extends Controller
      * @param  \App\
      * @return \Illuminate\Http\Response
      */
-    public function show(UserController $user)
+    public function show(User $user, Request $request)
     {
         //
+    }
+    public function post_recover(Request $request)
+    {
+        if(!isset($_POST['email']))
+        {
+            return response()->json([
+                'MESSAGE' => 'Please enter your email adress'], 403
+            );
+        }
+        $email = $_POST['email'];
+        if (self::recoverPassword($email)) {
+            $userRecover = User::where('email', $email)->first();
+            $id = $userRecover->id;
+            //$pwdDB = User::where('email', $userRecover->email)->first()->password;
+            $dataEmail = array(
+                'newPwd' => $this->randomString(),
+            );
+            if ($_POST["email"] == $userRecover->email) {
+                $userRecover->password = encrypt($dataEmail["newPwd"]);
+                $userRecover->save();
+                Mail::send('emails.welcome', $dataEmail, function($message){
+                    $emailRecipient = $_POST['email'];
+                    $message->from('bienestardigital2019@gmail.com', 'Password recovery');
+                    $message->to($emailRecipient)->subject('Recover password');
+                });
+                return response()->json([
+                    "MESSAGE" => "The new password has been sent to your email address " . $email], 200
+                );
+            }
+        }
+        else
+        {
+            return response()->json([
+                'MESSAGE' => 'The specified email does not exist'], 403
+            );
+        }
+
     }
     /**
      * Show the form for editing the specified resource.
