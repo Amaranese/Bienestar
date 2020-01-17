@@ -124,10 +124,87 @@ class UserController extends Controller
      * @param  \App\
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, User $user)
     {
-       //
+        if (empty($request->header('Authorization'))) 
+        {
+            return response()->json([
+                'MESSAGE' => 'Dont have enough permission'
+            ]);
+        }else
+        {
+            $userLogged = JWT::decode($request->header('Authorization'), $this->key, array('HS256'));
+            if (empty($request->name) && empty($request->email) && empty($request->newPassword))
+            {
+                return response()->json([
+                    'MESSAGE' => 'You have to change at least one field'], 400
+                );
+            }
+            $user->name = $userLogged->name;
+            if(empty($request->email))
+            {
+                $user->email = $userLogged->email;
+            }else
+            {
+                if (!strpos($request->email, "@") || !strpos($request->email, ".")) 
+                {
+                    return response()->json([
+                        'MESSAGE' => 'Wrong email syntax'], 400
+                    );
+                }
+                else
+                {
+                    $user->email = $request->email;
+                    if ($request->email == $userLogged->email) {
+                        return response()->json([
+                            'MESSAGE' => 'The email must be different from the previous one'], 400
+                        );
+                    }
+                    $user->save();
+                    return response()->json([
+                        'MESSAGE' => 'The user has been updated correctly'], 200
+                    );
+                }
+            }
+            if (empty($request->oldPassword) || empty($request->confirmNewPassword) || empty($request->newPassword)) 
+            {
+                $user->password = $userLogged->password;
+            }else
+            {
+                if ($userLogged->password != $request->oldPassword) {
+                    return response()->json([
+                        'MESSAGE' => 'The old password does not match with the new one'], 400
+                    );
+                }
+                if ($request->newPassword != $request->confirmNewPassword)
+                {
+                    return response()->json([
+                        'MESSAGE' => 'The new password does not match with the confirm password'], 400
+                    );
+                }
+                if ($request->newPassword == $userLogged->password) {
+                    return response()->json([
+                        'MESSAGE' => 'The password must be different from the previous one'], 400
+                    );
+                }
+                if (strlen($request->newPassword) > 7)
+                {
+                    $user->password = encrypt($request->newPassword);
+                    $user->save();
+                    return response()->json([
+                        'MESSAGE' => 'The user has been updated correctly'], 200
+                    );
+                } 
+                else 
+                {
+                    return response()->json([   
+                        'MESSAGE' => 'The password must have more than seven characters'], 411
+                    );
+                }
+            }            
+        }
     }
+
     /**
      * Remove the specified resource from storage.
      *
