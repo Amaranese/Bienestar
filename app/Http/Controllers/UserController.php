@@ -136,6 +136,18 @@ class UserController extends Controller
      */
     public function destroy(User $user)     //$user es el usuario que pasamos por parametro en POSTMAN, {en las rutas} entre corchetes pasamos el id del usuario que queremos borrar
     {
-       $user->delete();
+        $header = getallheaders();
+        $decoded = JWT::decode($header['Authorization'], $this->key, array('HS256'));
+        if ($decoded->role_id == 1) {
+            $user->delete();
+            return reponse()->json([
+                'MESSAGE' => 'The user has been deleted correctly'], 200
+            );
+        }
+        else{
+            return response()->json([
+                'MESSAGE' => 'Dont have enough permission',], 403
+            );
+        }
     }
 }
