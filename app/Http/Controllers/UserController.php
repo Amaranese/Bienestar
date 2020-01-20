@@ -131,7 +131,6 @@ class UserController extends Controller
                     $message->from('bienestardigital2019@gmail.com', 'Password recovery');
                     $message->to($emailRecipient)->subject('Recover password');
                 });
-                mail(to, subject, message)
                 return response()->json([
                     "MESSAGE" => "The new password has been sent to your email address " . $email], 200
                 );
