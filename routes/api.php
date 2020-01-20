@@ -18,9 +18,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('user', 'UserController');
-
 Route::apiResource('password', 'PasswordController');
-
 Route::apiResource('category', 'CategoryController');
-
 Route::post('login', 'LoginController@login');
+Route::post('recover', 'UserController@post_recover');
+
+
