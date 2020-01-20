@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use \Firebase\JWT\JWT;
 use Illuminate\Support\Facades\Mail;
-class UserController extends Controller
+class UserController extends Controller 
 {
     /**
      * Display a listing of the resource.
