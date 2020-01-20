@@ -55,7 +55,7 @@ class Controller extends BaseController
     // }
     // protected function getGlobalPath($image)
     // {
-    //     return "http://localhost:8888/MusARt/public/storage/" . $image;
+    //     return "" . $image;
     // }
      protected function recoverPassword($email)
     {
