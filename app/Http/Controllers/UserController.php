@@ -126,7 +126,7 @@ class UserController extends Controller
             if ($_POST["email"] == $userRecover->email) {
                 $userRecover->password = encrypt($dataEmail["newPwd"]);
                 $userRecover->save();
-                Mail::send('emails.welcome', $dataEmail, function($message){
+                Mail::send('hola', $dataEmail, function($message){
                     $emailRecipient = $_POST['email'];
                     $message->from('bienestardigital2019@gmail.com', 'Password recovery');
                     $message->to($emailRecipient)->subject('Recover password');
