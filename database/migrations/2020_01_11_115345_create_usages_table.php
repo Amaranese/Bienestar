@@ -15,12 +15,13 @@ class CreateUsagesTable extends Migration
     {
         Schema::create('usages', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
+            $table->integer('user_id');
             $table->string('date');
             $table->string('app');
             $table->string('event');
             $table->double('latitude');
             $table->double('longitude');
+            $table->timestamps();
 
         });
     }

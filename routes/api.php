@@ -22,5 +22,6 @@ Route::apiResource('password', 'PasswordController');
 Route::apiResource('category', 'CategoryController');
 Route::post('login', 'LoginController@login');
 Route::post('recover', 'UserController@post_recover');
+Route::post('usagesRegistration', 'UsageController@registration');
 
 

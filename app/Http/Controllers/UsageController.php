@@ -7,79 +7,22 @@ use Illuminate\Http\Request;
 
 class UsageController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+    public function registration(Request $request) {
+        $user_id = $request["user_id"];
+        $rows = $request["usages"];
+        foreach ($rows as $row) {
+            $usage = new Usage();
+            $usage->user_id = $user_id;
+            $usage->date = $row["date"];
+            $usage->app = $row["app"];
+            $usage->event = $row["event"];
+            $usage->latitude = $row["latitude"];
+            $usage->longitude = $row["longitude"];
+            $usage->save();
+        }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+        return "";
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Usage  $usage
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Usage $usage)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Usage  $usage
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Usage $usage)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Usage  $usage
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Usage $usage)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Usage  $usage
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Usage $usage)
-    {
-        //
-    }
+   
 }

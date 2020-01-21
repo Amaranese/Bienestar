@@ -19,4 +19,9 @@ class User extends Model
     {
         return $this->hasMany('\App\Password');
     }
+    public function usage()
+    {
+        return $this->hasMany('\App\Usage');
+    }
+
 }
