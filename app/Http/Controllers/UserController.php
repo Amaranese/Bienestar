@@ -13,7 +13,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $header = getallheaders();
         $userParams = JWT::decode($header['Authorization'],$this->key, array('HS256'));
