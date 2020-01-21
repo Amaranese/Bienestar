@@ -22,7 +22,9 @@ class UsageController extends Controller
             $usage->save();
         }
 
-        return "";
+        return response()->json([
+                'MESSAGE' => 'The usages has been created correctly'
+            ]);
     }
    
 }

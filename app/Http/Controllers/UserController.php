@@ -88,7 +88,8 @@ class UserController extends Controller
             $user->save();
             $userSave = User::where('email', $request->email)->first();
             return response()->json([
-                'MESSAGE' => 'The user has been created correctly'
+                'MESSAGE' => 'The user has been created correctly',
+                'user_id' => $user->id
             ]);
         } else
         {
