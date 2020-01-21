@@ -57,7 +57,6 @@ class Controller extends BaseController
     {
         return "" . $image;
     }
-    
     protected function recoverPassword($email)
     {
         $userRecover = User::where('email', $email)->first();
