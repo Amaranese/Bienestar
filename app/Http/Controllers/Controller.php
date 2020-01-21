@@ -47,17 +47,18 @@ class Controller extends BaseController
     		return false;
     	}
     }
-    // protected function dateConverter($date)
-    // {
-    //     $unixDate = strtotime($date);
-    //     $newDateFormat = date('Y-m-d H:i:s', $unixDate);
-    //     return $newDateFormat;
-    // }
-    // protected function getGlobalPath($image)
-    // {
-    //     return "" . $image;
-    // }
-     protected function recoverPassword($email)
+    protected function dateConverter($date)
+    {
+        $unixDate = strtotime($date);
+        $newDateFormat = date('Y-m-d H:i:s', $unixDate);
+        return $newDateFormat;
+    }
+    protected function getGlobalPath($image)
+    {
+        return "" . $image;
+    }
+    
+    protected function recoverPassword($email)
     {
         $userRecover = User::where('email', $email)->first();
         if ($userRecover == null) {
