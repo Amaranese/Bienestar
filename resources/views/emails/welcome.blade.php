@@ -6,7 +6,7 @@
 <body>
 	<h2>Contraseña</h2>
 	<div>
-		Youre new password is {!!$newPwd!!} 
+		Your new password is {!!$newPwd!!} 
 	</div>
 </body>
 </html>
