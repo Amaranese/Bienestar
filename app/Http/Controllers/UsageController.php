@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Usage;
 use Illuminate\Http\Request;
+use App\User;
 
 class UsageController extends Controller
 {
@@ -26,5 +27,13 @@ class UsageController extends Controller
                 'MESSAGE' => 'The usages has been created correctly'
             ]);
     }
-   
+
+
+    public function list(Request $request) {
+        $user_id = $request["user_id"];
+        // $user = User::where('id', $user_id)->first();
+        // $usages = $user->usages();
+        $usages = Usage::where('user_id', $user_id)->get();
+        return response()->json($usages);
+    }
 }

@@ -33,6 +33,7 @@ class LoginController extends Controller
             $token = JWT::encode($tokenParams, $this->key);
             return response()->json([
                 'MESSAGE' => $token,
+                'user_id' => $user->id
             ]);
         }else 
         {
