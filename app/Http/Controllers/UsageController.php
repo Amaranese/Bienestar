@@ -8,7 +8,6 @@ use App\User;
 
 class UsageController extends Controller
 {
-
     public function registration(Request $request) {
         $user_id = $request["user_id"];
         $rows = $request["usages"];
@@ -22,13 +21,10 @@ class UsageController extends Controller
             $usage->longitude = $row["longitude"];
             $usage->save();
         }
-
         return response()->json([
                 'MESSAGE' => 'The usages has been created correctly'
             ]);
     }
-
-
     public function list(Request $request) {
         $user_id = $request["user_id"];
         // $user = User::where('id', $user_id)->first();
