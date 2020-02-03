@@ -106,7 +106,13 @@ class UserController extends Controller
      */
     public function show(User $user, Request $request)
     {
-        //
+        if (empty($request->header('Authorization'))) 
+        {
+            return response()->json([
+                'MESSAGE' => 'Dont have enough permission'
+            ]);
+        }
+        return response()->json($user, 200);
     }
     public function post_recover(Request $request)
     {
@@ -167,6 +173,8 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        echo $request->email;
+        echo $request->ricardo;
         if (empty($request->header('Authorization'))) 
         {
             return response()->json([
