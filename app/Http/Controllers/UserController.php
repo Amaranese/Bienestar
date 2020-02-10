@@ -173,8 +173,6 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        echo $request->email;
-        echo $request->ricardo;
         if (empty($request->header('Authorization'))) 
         {
             return response()->json([
@@ -189,11 +187,15 @@ class UserController extends Controller
                     'MESSAGE' => 'You have to change at least one field'], 400
                 );
             }
-            $user->name = $userLogged->name;
-            if(empty($request->email))
-            {
-                $user->email = $userLogged->email;
-            }else
+
+            if (!empty($request->name) && empty($request->email) && empty($request->newPassword)){
+                $user->name = $request->name;
+                $user->save();
+                return response()->json([
+                    'MESSAGE' => 'The user has been updated correctly'], 200
+                );
+            }
+            if(!empty($request->email))
             {
                 if (!strpos($request->email, "@") || !strpos($request->email, ".")) 
                 {
