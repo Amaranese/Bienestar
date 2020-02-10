@@ -24,5 +24,6 @@ Route::post('login', 'LoginController@login');
 Route::post('recover', 'UserController@post_recover');
 Route::post('usagesRegistration', 'UsageController@registration');
 Route::post('usages/list', 'UsageController@list');
-
+Route::post('control/read', 'AppController@read');
+Route::post('control/update', 'AppController@update');
 
