@@ -13,7 +13,7 @@ class CreateAppTable extends Migration
      */
     public function up()
     {
-        Schema::create('app_controllers', function (Blueprint $table) {
+        Schema::create('apps', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
             $table->string('app_name');
