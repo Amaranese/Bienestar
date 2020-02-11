@@ -26,4 +26,3 @@ Route::post('usagesRegistration', 'UsageController@registration');
 Route::post('usages/list', 'UsageController@list');
 Route::post('control/read', 'AppController@read');
 Route::post('control/update', 'AppController@update');
-
