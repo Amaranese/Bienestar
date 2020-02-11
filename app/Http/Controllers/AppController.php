@@ -10,8 +10,8 @@ class AppController extends Controller
     	
         $user_id = $request["user_id"];
         $app_name = $request["app_name"];
-        $controls = App::where('user_id', $user_id)->where('app_name', $app_name)->get();        
-        return response()->json($controls);
+        $control = App::where('user_id', $user_id)->where('app_name', $app_name)->first();        
+        return response()->json($control);
     }
 
     public function update(Request $request) {
