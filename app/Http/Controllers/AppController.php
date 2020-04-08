@@ -5,15 +5,12 @@ use Illuminate\Http\Request;
 
 class AppController extends Controller
 {
-
     public function read(Request $request) {
-    	
         $user_id = $request["user_id"];
         $app_name = $request["app_name"];
         $control = App::where('user_id', $user_id)->where('app_name', $app_name)->first();        
         return response()->json($control);
     }
-
     public function update(Request $request) {
     	$user_id = $request["user_id"];
         $app_name = $request["app_name"];

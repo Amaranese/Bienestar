@@ -48,7 +48,6 @@ class UserController extends Controller
         {
             return response()->json([
                 'MESSAGE' => 'You should fill all the fields'], 400
-
             );
         }
         $user->name = str_replace(' ', '', $request->name);
@@ -187,7 +186,6 @@ class UserController extends Controller
                     'MESSAGE' => 'You have to change at least one field'], 400
                 );
             }
-
             if (!empty($request->name) && empty($request->email) && empty($request->newPassword)){
                 $user->name = $request->name;
                 $user->save();
@@ -255,7 +253,6 @@ class UserController extends Controller
             }            
         }
     }
-
     /**
      * Remove the specified resource from storage.
      *
